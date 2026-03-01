@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { 
-  ArrowLeft, Play, Activity, Clock, Zap, 
-  CheckCircle2, AlertCircle, Loader2
+  ArrowLeft, ArrowRight, Play, Activity, Clock, Zap, 
+  CheckCircle2, AlertCircle, Loader2, Download, FileText, BarChart3
 } from "lucide-react";
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, 
@@ -107,14 +107,34 @@ export default function Dashboard() {
             </div>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="hidden md:flex items-center gap-2 text-xs font-medium bg-green-500/10 text-green-400 px-3 py-1.5 rounded-full border border-green-500/20">
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               System Operational
             </div>
+
+            {/* Export Buttons */}
+            <a
+              href="/api/export/transactions/csv"
+              download
+              data-testid="link-export-csv"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-white/5 text-white border border-white/10 hover:bg-white/10 transition-all"
+            >
+              <Download className="w-3.5 h-3.5" /> CSV
+            </a>
+            <a
+              href="/api/export/transactions/pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="link-export-pdf"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-white/5 text-white border border-white/10 hover:bg-white/10 transition-all"
+            >
+              <FileText className="w-3.5 h-3.5" /> PDF Report
+            </a>
             
             <button 
               onClick={() => setIsSimulating(!isSimulating)}
+              data-testid="button-simulate"
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                 isSimulating 
                   ? "bg-red-500/10 text-red-500 border border-red-500/20 hover:bg-red-500/20" 

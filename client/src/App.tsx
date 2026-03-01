@@ -8,6 +8,10 @@ import Home from "@/pages/Home";
 import Dashboard from "@/pages/Dashboard";
 import Pricing from "@/pages/Pricing";
 import RequestDemo from "@/pages/RequestDemo";
+import AdminDashboard from "@/pages/AdminDashboard";
+import AuditLogPage from "@/pages/AuditLog";
+import Login from "@/pages/Login";
+import CheckoutSuccess from "@/pages/CheckoutSuccess";
 
 function Router() {
   return (
@@ -16,6 +20,10 @@ function Router() {
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/pricing" component={Pricing} />
       <Route path="/request-demo" component={RequestDemo} />
+      <Route path="/admin" component={AdminDashboard} />
+      <Route path="/audit-log" component={AuditLogPage} />
+      <Route path="/login" component={Login} />
+      <Route path="/checkout/success" component={CheckoutSuccess} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -1,12 +1,22 @@
 import { Link, useLocation } from "wouter";
-import { Activity, ShieldCheck, TerminalSquare } from "lucide-react";
+import { Activity, ShieldCheck, LogIn, Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 export function Navbar() {
   const [location] = useLocation();
+  const [open, setOpen] = useState(false);
+
+  const links = [
+    { href: "/", label: "Platform" },
+    { href: "/dashboard", label: "Dashboard" },
+    { href: "/pricing", label: "Pricing" },
+    { href: "/audit-log", label: "Audit Log" },
+    { href: "/admin", label: "Admin" },
+  ];
 
   return (
-    <motion.nav 
+    <motion.nav
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       className="fixed top-0 inset-x-0 z-50 glass-panel border-x-0 border-t-0"
@@ -23,46 +33,73 @@ export function Navbar() {
             </span>
           </Link>
 
-          {/* Nav Links */}
-          <div className="hidden md:flex items-center gap-8">
-            <Link 
-              href="/" 
-              className={`text-sm font-medium transition-colors ${
-                location === "/" ? "text-white" : "text-muted-foreground hover:text-white"
-              }`}
-            >
-              Platform
-            </Link>
-            <Link 
-              href="/pricing" 
-              className={`text-sm font-medium transition-colors ${
-                location === "/pricing" ? "text-white" : "text-muted-foreground hover:text-white"
-              }`}
-            >
-              Pricing
-            </Link>
-            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-white transition-colors cursor-pointer">
-              <ShieldCheck className="w-4 h-4" />
-              Compliance
-            </div>
+          {/* Desktop Nav Links */}
+          <div className="hidden md:flex items-center gap-6">
+            {links.map(link => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`text-sm font-medium transition-colors ${
+                  location === link.href ? "text-white" : "text-muted-foreground hover:text-white"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
-          {/* CTA */}
-          <div className="flex items-center gap-4">
-            <Link 
+          {/* Desktop CTA */}
+          <div className="hidden md:flex items-center gap-3">
+            <Link
               href="/request-demo"
-              className="px-5 py-2.5 rounded-lg text-sm font-semibold bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all"
+              data-testid="link-request-demo"
+              className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all"
             >
               Request Demo
             </Link>
-            <Link 
-              href="/dashboard"
-              className="hidden sm:flex px-5 py-2.5 rounded-lg text-sm font-semibold bg-primary text-primary-foreground shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30_px_rgba(0,229,255,0.5)] hover:-translate-y-0.5 transition-all"
+            <Link
+              href="/login"
+              data-testid="link-login"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold bg-primary text-primary-foreground shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] hover:-translate-y-0.5 transition-all"
             >
-              Launch Dashboard
+              <LogIn className="w-4 h-4" /> Secure Login
             </Link>
           </div>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            className="md:hidden text-muted-foreground hover:text-white"
+            onClick={() => setOpen(!open)}
+            data-testid="button-mobile-menu"
+          >
+            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
+
+        {/* Mobile Nav */}
+        {open && (
+          <div className="md:hidden pb-6 space-y-2 border-t border-white/5 pt-4">
+            {links.map(link => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className={`block px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  location === link.href ? "text-white bg-white/5" : "text-muted-foreground hover:text-white"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link
+              href="/login"
+              onClick={() => setOpen(false)}
+              className="block px-4 py-2 rounded-lg text-sm font-semibold bg-primary text-primary-foreground text-center mt-2"
+            >
+              Secure Login
+            </Link>
+          </div>
+        )}
       </div>
     </motion.nav>
   );
